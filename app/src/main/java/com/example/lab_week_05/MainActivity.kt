@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.Response
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+
 class MainActivity : AppCompatActivity() {
     private val retrofit by lazy{
         Retrofit.Builder()
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private val imageLoader: ImageLoader by lazy {
         GlideLoader(this)
     }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,8 +62,16 @@ class MainActivity : AppCompatActivity() {
                         Log.d(MAIN_ACTIVITY, "Missing image URL")
                     }
 
-                    apiResponseView.text = getString(R.string.image_placeholder,
-                        firstImage)
+                    val firstBreed = image?.firstOrNull()?.breeds
+                    if (firstBreed != null && firstBreed.isNotEmpty()) {
+                        apiResponseView.text = getString(R.string.image_placeholder,
+                            firstBreed)
+                    } else {
+                        apiResponseView.text = getString(R.string.image_placeholder,
+                            "Unknown")
+                    }
+
+
                 }
                 else{
                     Log.e(MAIN_ACTIVITY, "Failed to get response\n" +
